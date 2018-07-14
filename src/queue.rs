@@ -1,50 +1,15 @@
 use std;
-use self::Element::*;
 
-// todo: use Option
-enum Element {
-    Root,
-    Item(usize),
-}
-
-impl std::fmt::Debug for Element {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            &Root => write!(f, "root"),
-            &Item(n) => write!(f, "item({})", n)
-        }
-    }
-}
-
-impl std::cmp::PartialEq for Element {
-    fn eq(&self, other: &Element) -> bool {
-        match other {
-            &Root => match self {
-                &Root => true,
-                _ => false,
-            },
-            &Item(a) => match self {
-                &Item(b) => a == b,
-                _ => false,
-            },
-        }
-    }
-}
-
-
-fn get_parent(n: usize) -> Element {
+fn get_parent(n: usize) -> Option<usize> {
     match n {
-        0 => Root,
-        x @ _ => Item((x - 1) / 2),
+        0 => None,
+        x @ _ => Some((x - 1) / 2),
     }
 }
 
 fn get_young_child(n: usize) -> usize {
     2 * n + 1
-
-//        (n*2)-1
 }
-
 
 pub struct Queue<T> {
     q: std::vec::Vec<T>,
@@ -93,8 +58,8 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
 
     fn bubble_up(&mut self, p: usize) {
         match get_parent(p) {
-            Root => {}
-            Item(parent) => {
+            None => {}
+            Some(parent) => {
                 match self.q[parent].cmp(&self.q[p]) {
                     std::cmp::Ordering::Greater => {
                         self.q.swap(p, parent);
@@ -126,11 +91,11 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
 
 #[test]
 fn test_parent() {
-    assert_eq!(get_parent(0), Root);
-    assert_eq!(get_parent(1), Item(0));
-    assert_eq!(get_parent(2), Item(0));
-    assert_eq!(get_parent(9), Item(4));
-    assert_eq!(get_parent(10), Item(4));
+    assert_eq!(get_parent(0), None);
+    assert_eq!(get_parent(1), Some(0));
+    assert_eq!(get_parent(2), Some(0));
+    assert_eq!(get_parent(9), Some(4));
+    assert_eq!(get_parent(10), Some(4));
 }
 
 
@@ -168,5 +133,4 @@ fn test_queue() {
     assert_eq!(q.extract_min(), Some(9));
     assert_eq!(q.extract_min(), Some(10));
     assert_eq!(q.extract_min(), Some(11));
-
 }
