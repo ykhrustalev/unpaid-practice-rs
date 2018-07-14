@@ -1,0 +1,6 @@
+[package]
+name = "unpaid-practice"
+version = "0.1.0"
+authors = ["Yuri Khrustalev <yuri.khrustalev@gmail.com>"]
+
+[dependencies]
