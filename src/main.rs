@@ -1,122 +1,118 @@
 fn main() {
-    println!("Hello, world!");
+    let mut q: Queue<i32> = Queue::new();
+
+    q.insert(5);
+    q.insert(2);
+    q.insert(8);
+    q.insert(7);
+
+    for i in &q.q {
+        println!("{}", i)
+    }
 }
 
-enum PQElement {
+
+enum Element {
     Root,
     Item(usize),
 }
 
-use PQElement::*;
+use Element::*;
 
-impl std::fmt::Debug for PQElement {
+impl std::fmt::Debug for Element {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            Root => write!(f, "root"),
-            Item(n) => write!(f, "item({})", n)
+            &Root => write!(f, "root"),
+            &Item(n) => write!(f, "item({})", n)
         }
     }
 }
 
-impl std::cmp::PartialEq for PQElement {
-    fn eq(&self, other: &PQElement) -> bool {
+impl std::cmp::PartialEq for Element {
+    fn eq(&self, other: &Element) -> bool {
         match other {
-            Root => match self {
-                Root => true,
+            &Root => match self {
+                &Root => true,
                 _ => false,
             },
-            Item(a) => match self {
-                Item(b) => a == b,
+            &Item(a) => match self {
+                &Item(b) => a == b,
                 _ => false,
             },
         }
     }
 }
 
-const PQ_SIZE: usize = 10;
 
-struct PQ {
-    q: [i32; PQ_SIZE],
-    n: usize,
-}
-
-fn pg_parent(n: usize) -> PQElement {
+fn pg_parent(n: usize) -> Element {
     match n {
-        1 => Root,
-        x @ _ => Item(x / 2),
+        0 => Root,
+        x @ _ => Item((x - 1) / 2),
     }
 }
 
 #[test]
 fn test_pg_parent() {
-    assert_eq!(pg_parent(1), Root);
-    assert_eq!(pg_parent(2), Item(1));
-    assert_eq!(pg_parent(3), Item(1));
-    assert_eq!(pg_parent(10), Item(5));
-    assert_eq!(pg_parent(11), Item(5));
+    assert_eq!(pg_parent(0), Root);
+    assert_eq!(pg_parent(1), Item(0));
+    assert_eq!(pg_parent(2), Item(0));
+    assert_eq!(pg_parent(9), Item(4));
+    assert_eq!(pg_parent(10), Item(4));
 }
 
-fn pg_young_child(n: usize) -> usize {
-    n * 2
+//#[derive(Copy, Clone)]
+pub struct Queue<T> {
+    q: std::vec::Vec<T>,
+    n: usize,
 }
 
-fn pg_insert(q: &mut PQ, x: i32) {
-    if q.n >= PQ_SIZE {
-        println!("overflow");
-        return;
+
+impl<T: std::cmp::Ord + std::fmt::Display> Queue<T> {
+    pub fn new() -> Queue<T> {
+        Queue {
+            q: std::vec::Vec::new(),
+            n: 0,
+        }
     }
 
-    q.n += 1;
-    q.q[q.n] = x;
-    let n = q.n;
-    bubble_up(q, n)
+    pub fn insert(&mut self, value: T) {
+        self.q.insert(self.n, value);
+        let n = self.n;
+        self.bubble_up(n);
+        self.n += 1;
+    }
+
+    fn swap(&mut self, a: usize, b: usize) {
+        self.q.swap(a, b)
+    }
+
+    fn bubble_up(&mut self, p: usize) {
+        match pg_parent(p) {
+            Root => {}
+            Item(parent) => {
+                match self.q[parent].cmp(&self.q[p]) {
+                    std::cmp::Ordering::Greater => {
+                        self.swap(p, parent);
+                        self.bubble_up(parent)
+                    }
+                    _ => {}
+                }
+            }
+        }
+    }
 }
 
 #[test]
-fn test_pg_insert() {
-    let q = &mut PQ { q: [0; 10], n: 0 };
+fn test_pg() {
+    let mut q: Queue<i32> = Queue::new();
 
-    pg_insert(q, 5);
-    pg_insert(q, 2);
-    pg_insert(q, 8);
-    pg_insert(q, 7);
+    q.insert(5);
+    q.insert(2);
+    q.insert(8);
+    q.insert(7);
 
     assert_eq!(q.q[0], 2);
     assert_eq!(q.q[1], 5);
-    assert_eq!(q.q[2], 7);
-    assert_eq!(q.q[3], 8);
-}
-
-fn bubble_up(q: &mut PQ, p: usize) {
-    match pg_parent(p) {
-        Item(parent) => {
-            if q.q[parent] > q.q[p] {
-                pg_swap(q, p, parent);
-                bubble_up(q, parent)
-            }
-        }
-        Root => {}
-    }
-}
-
-fn pg_swap(q: &mut PQ, a: usize, b: usize) {
-    if a >= PQ_SIZE || b >= PQ_SIZE {
-        return;
-    }
-
-    let (x, y) = (q.q[a], q.q[b]);
-    q.q[b] = x;
-    q.q[a] = y;
-}
-
-
-#[test]
-fn test_pg_swap() {
-    let q = &mut PQ { q: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n: 0 };
-
-    pg_swap(q, 0, 9);
-    pg_swap(q, 0, 19);
-
-    assert_eq!(q.q[0], 10);
-    assert_eq!(q.q[9], 1);
+    assert_eq!(q.q[2], 8);
+    assert_eq!(q.q[3], 7);
 }
