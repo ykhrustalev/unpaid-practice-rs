@@ -1,11 +1,12 @@
 fn main() {
-    let mut q: Queue<i32> = Queue::new();
+//    let mut q: Queue<i32> = Queue::new();
 
-    q.insert(5);
-    q.insert(2);
-    q.insert(8);
-    q.insert(7);
+//    q.insert(5);
+//    q.insert(2);
+//    q.insert(8);
+//    q.insert(7);
 
+    let q: Queue<i32> = Queue::new_with_elements(&[5, 2, 8, 7]);
     for i in &q.q {
         println!("{}", i)
     }
@@ -67,12 +68,24 @@ pub struct Queue<T> {
 }
 
 
-impl<T: std::cmp::Ord + std::fmt::Display> Queue<T> {
+impl<T: std::cmp::Ord + std::fmt::Display + std::clone::Clone> Queue<T> {
     pub fn new() -> Queue<T> {
         Queue {
             q: std::vec::Vec::new(),
             n: 0,
         }
+    }
+
+    pub fn new_with_elements(items: &[T]) -> Queue<T> {
+        let mut q: Queue<T> = Queue {
+            q: std::vec::Vec::new(),
+            n: 0,
+        };
+
+        for i in items {
+            q.insert(i.clone());
+        }
+        q
     }
 
     pub fn insert(&mut self, value: T) {
