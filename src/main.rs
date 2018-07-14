@@ -1,15 +1,23 @@
 mod queue;
 
+use std::iter::FromIterator;
+
 fn main() {
-//    let mut q: Queue<i32> = Queue::new();
+    let mut q: queue::Queue<i32> = queue::from_elem(&[
+        1492,
+        1783,
+        1776,
+        1804,
+        1865,
+        1945,
+        1963,
+        1918,
+        2001,
+        1941,
+    ]);
 
-//    q.insert(5);
-//    q.insert(2);
-//    q.insert(8);
-//    q.insert(7);
+    println!("items: {}", std::vec::Vec::from_iter(q.items().iter().map(|x| x.to_string())).join(","));
+    println!("min: {}", q.extract_min().unwrap());
+    println!("items: {}", std::vec::Vec::from_iter(q.items().iter().map(|x| x.to_string())).join(","));
 
-    let q: queue::Queue<i32> = queue::Queue::new_with_elements(&[5, 2, 8, 7]);
-    for i in &q.items() {
-        println!("{}", i)
-    }
 }
