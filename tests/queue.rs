@@ -2,7 +2,6 @@ extern crate unpaidpractice;
 
 use unpaidpractice::queue::*;
 
-
 #[test]
 fn test_1() {
     let mut q: Queue<i32> = Queue::new();
@@ -32,13 +31,22 @@ fn test_1() {
     assert_eq!(q.items(), [1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918]);
 
     q.insert(2001);
-    assert_eq!(q.items(), [1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001]);
+    assert_eq!(
+        q.items(),
+        [1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001]
+    );
 
     q.insert(1941);
-    assert_eq!(q.items(), [1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001, 1941]);
+    assert_eq!(
+        q.items(),
+        [1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001, 1941]
+    );
 
     assert_eq!(q.shift(), Some(1492));
-    assert_eq!(q.items(), [1776, 1783, 1941, 1804, 1865, 1945, 1963, 1918, 2001]);
+    assert_eq!(
+        q.items(),
+        [1776, 1783, 1941, 1804, 1865, 1945, 1963, 1918, 2001]
+    );
 
     assert_eq!(q.shift(), Some(1776));
     assert_eq!(q.items(), [1783, 1804, 1941, 1918, 1865, 1945, 1963, 2001]);

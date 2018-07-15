@@ -1,11 +1,13 @@
-use std;
+use std::clone::Clone;
+use std::cmp::Ord;
+use std::vec::Vec;
 
 pub struct Queue<T> {
-    q: std::vec::Vec<T>,
+    q: Vec<T>,
 }
 
 #[allow(dead_code)]
-pub fn with_elem<T: std::cmp::Ord + std::clone::Clone>(items: &[T]) -> Queue<T> {
+pub fn with_elem<T: Ord + Clone>(items: &[T]) -> Queue<T> {
     let mut q: Queue<T> = Queue::new();
     for i in items {
         q.insert(i.clone());
@@ -13,11 +15,9 @@ pub fn with_elem<T: std::cmp::Ord + std::clone::Clone>(items: &[T]) -> Queue<T> 
     q
 }
 
-impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
+impl<T: Ord + Clone> Queue<T> {
     pub fn new() -> Queue<T> {
-        Queue {
-            q: std::vec::Vec::new(),
-        }
+        Queue { q: Vec::new() }
     }
 
     pub fn insert(&mut self, value: T) {
@@ -38,7 +38,7 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
         }
     }
 
-    pub fn items(&self) -> std::vec::Vec<T> {
+    pub fn items(&self) -> Vec<T> {
         self.q.clone()
     }
 
