@@ -1,10 +1,10 @@
 extern crate unpaidpractice;
 
-use unpaidpractice::queue::*;
+use unpaidpractice::heap::*;
 
 #[test]
 fn test_1() {
-    let mut q: Queue<i32> = Queue::new();
+    let mut q: Heap<i32> = Heap::new();
 
     q.insert(1492);
     assert_eq!(q.items(), [1492]);
@@ -81,7 +81,7 @@ fn test_1() {
 
 #[test]
 fn test_2() {
-    let mut q: Queue<i32> = with_elem(&[12, 11, 13, 5, 6, 7]);
+    let mut q: Heap<i32> = Heap::with_elem(&[12, 11, 13, 5, 6, 7]);
 
     assert_eq!(q.items(), [5, 6, 7, 12, 11, 13]);
 

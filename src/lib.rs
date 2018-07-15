@@ -1,5 +1,5 @@
 pub mod heapsort;
-pub mod queue;
+pub mod heap;
 
 #[cfg(test)]
 mod tests {}

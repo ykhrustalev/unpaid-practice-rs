@@ -1,8 +1,8 @@
-mod queue;
+mod heap;
 
 use std::iter::FromIterator;
 
-impl std::fmt::Display for queue::Queue<i32> {
+impl std::fmt::Display for heap::Heap<i32> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
         let x = std::vec::Vec::from_iter(self.items().iter().map(|x| x.to_string())).join(",");
         std::fmt::Display::fmt(&x, f)
@@ -10,7 +10,7 @@ impl std::fmt::Display for queue::Queue<i32> {
 }
 
 fn main() {
-    let mut q: queue::Queue<i32> = queue::Queue::new();
+    let mut q: heap::Heap<i32> = heap::Heap::new();
     let items = &[1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001, 1941];
 
     for item in items {

@@ -2,22 +2,22 @@ use std::clone::Clone;
 use std::cmp::Ord;
 use std::vec::Vec;
 
-pub struct Queue<T> {
+pub struct Heap<T> {
     q: Vec<T>,
 }
 
-#[allow(dead_code)]
-pub fn with_elem<T: Ord + Clone>(items: &[T]) -> Queue<T> {
-    let mut q: Queue<T> = Queue::new();
-    for i in items {
-        q.insert(i.clone());
+impl<T: Ord + Clone> Heap<T> {
+    pub fn new() -> Heap<T> {
+        Heap { q: Vec::new() }
     }
-    q
-}
 
-impl<T: Ord + Clone> Queue<T> {
-    pub fn new() -> Queue<T> {
-        Queue { q: Vec::new() }
+    #[allow(dead_code)]
+    pub fn with_elem(items: &[T]) -> Heap<T> {
+        let mut q: Heap<T> = Heap::new();
+        for i in items {
+            q.insert(i.clone());
+        }
+        q
     }
 
     pub fn insert(&mut self, value: T) {
