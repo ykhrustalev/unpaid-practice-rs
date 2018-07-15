@@ -4,7 +4,7 @@ use std::cmp::Ord;
 use super::heap::*;
 
 pub fn sort<T: Clone + Ord>(items: &mut [T]) {
-    let mut q: Heap<T> = Heap::with_elem(items);
+    let mut q: ArrayHeap<T> = ArrayHeap::with_elem(items);
 
     for i in 0..items.len() {
         match q.shift() {

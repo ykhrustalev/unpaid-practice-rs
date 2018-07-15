@@ -2,17 +2,17 @@ use std::clone::Clone;
 use std::cmp::Ord;
 use std::vec::Vec;
 
-pub struct Heap<T> {
+pub struct ArrayHeap<T> {
     v: Vec<T>,
 }
 
-impl<T: Ord + Clone> Heap<T> {
-    pub fn new() -> Heap<T> {
-        Heap { v: Vec::new() }
+impl<T: Ord + Clone> ArrayHeap<T> {
+    pub fn new() -> ArrayHeap<T> {
+        ArrayHeap { v: Vec::new() }
     }
 
-    pub fn with_elem(items: &[T]) -> Heap<T> {
-        let mut h = Heap { v: Vec::new() };
+    pub fn with_elem(items: &[T]) -> ArrayHeap<T> {
+        let mut h = ArrayHeap { v: Vec::new() };
         h.v.extend_from_slice(items);
 
         for i in (0..h.v.len() - 1).rev() {

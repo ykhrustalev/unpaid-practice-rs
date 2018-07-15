@@ -4,7 +4,7 @@ use unpaidpractice::heap::*;
 
 #[test]
 fn test_1() {
-    let mut h: Heap<i32> = Heap::new();
+    let mut h: ArrayHeap<i32> = ArrayHeap::new();
 
     h.insert(1492);
     assert_eq!(h.items(), [1492]);
@@ -81,7 +81,7 @@ fn test_1() {
 
 #[test]
 fn test_2() {
-    let mut h: Heap<i32> = Heap::new();
+    let mut h: ArrayHeap<i32> = ArrayHeap::new();
 
     h.insert(10);
     h.insert(3);
@@ -105,8 +105,8 @@ fn test_2() {
 
 #[test]
 fn test_with_elem() {
-    let h: Heap<i32> =
-        Heap::with_elem(&[1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001, 1941]);
+    let h: ArrayHeap<i32> =
+        ArrayHeap::with_elem(&[1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001, 1941]);
 
     assert_eq!(
         h.items(),
