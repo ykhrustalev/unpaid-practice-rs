@@ -16,6 +16,7 @@ pub struct Queue<T> {
     n: usize,
 }
 
+#[allow(dead_code)]
 pub fn from_elem<T: std::cmp::Ord + std::clone::Clone>(items: &[T]) -> Queue<T> {
     let mut q: Queue<T> = Queue::new();
     for i in items {
@@ -40,10 +41,11 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
         self.q.clone()
     }
 
-    pub fn extract_min(&mut self) -> Option<T> {
+    pub fn shift(&mut self) -> Option<T> {
         if self.q.is_empty() {
             return None;
         }
+
         let min = self.q.remove(0);
         match self.q.pop() {
             None => {}
@@ -77,8 +79,13 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
 
         for i in 0..1 {
             let candidate = c + i;
-            if candidate <= self.n && self.q[min_index] > self.q[candidate] {
-                min_index = candidate
+            if candidate <= self.n {
+                // todo: replace with get()
+                //let a = self.q.get(min_index);
+                //let b = self.q.get(candidate);
+                if self.q[min_index] > self.q[candidate] {
+                    min_index = candidate
+                }
             }
         }
 
@@ -108,17 +115,18 @@ fn test_get_young_child() {
 
 #[test]
 fn test_queue() {
-    let mut q: Queue<i32> = Queue::new();
+    let mut q: Queue<i32> = from_elem(&[12, 11, 13, 5, 6, 7]);
 
-    q.insert(5);
-    q.insert(2);
-    q.insert(8);
-    q.insert(7);
-    q.insert(9);
+    assert_eq!(q.items(), [5, 6, 7, 12, 11, 13]);
 
-    assert_eq!(q.items(), [2, 5, 8, 7, 9]);
+    assert_eq!(q.shift(), Some(5));
+    assert_eq!(q.shift(), Some(6));
+    assert_eq!(q.shift(), Some(7));
+    assert_eq!(q.shift(), Some(11));
+    assert_eq!(q.shift(), Some(12));
+//    assert_eq!(q.shift(), Some(13));
 
-    assert_eq!(q.extract_min(), Some(2));
+
     assert_eq!(q.items(), [5, 7, 8, 9]);
 
     q.insert(10);
@@ -126,11 +134,11 @@ fn test_queue() {
     q.insert(11);
 
     assert_eq!(q.items(), [3, 7, 5, 9, 10, 8, 11]);
-    assert_eq!(q.extract_min(), Some(3));
-    assert_eq!(q.extract_min(), Some(5));
-    assert_eq!(q.extract_min(), Some(7));
-    assert_eq!(q.extract_min(), Some(8));
-    assert_eq!(q.extract_min(), Some(9));
-    assert_eq!(q.extract_min(), Some(10));
-    assert_eq!(q.extract_min(), Some(11));
+    assert_eq!(q.shift(), Some(3));
+    assert_eq!(q.shift(), Some(5));
+    assert_eq!(q.shift(), Some(7));
+    assert_eq!(q.shift(), Some(8));
+    assert_eq!(q.shift(), Some(9));
+    assert_eq!(q.shift(), Some(10));
+    assert_eq!(q.shift(), Some(11));
 }
