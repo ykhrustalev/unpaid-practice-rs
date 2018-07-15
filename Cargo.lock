@@ -1,4 +1,4 @@
-[[package]]
-name = "unpaid-practice"
+[root]
+name = "unpaidpractice"
 version = "0.1.0"
 
