@@ -1,5 +1,6 @@
-#[cfg(test)]
-use ::queue::*;
+extern crate unpaidpractice;
+
+use unpaidpractice::queue::*;
 
 
 #[test]
@@ -72,7 +73,7 @@ fn test_1() {
 
 #[test]
 fn test_2() {
-    let mut q: Queue<i32> = from_elem(&[12, 11, 13, 5, 6, 7]);
+    let mut q: Queue<i32> = with_elem(&[12, 11, 13, 5, 6, 7]);
 
     assert_eq!(q.items(), [5, 6, 7, 12, 11, 13]);
 

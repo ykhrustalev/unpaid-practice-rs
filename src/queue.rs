@@ -4,7 +4,8 @@ pub struct Queue<T> {
     q: std::vec::Vec<T>,
 }
 
-pub fn from_elem<T: std::cmp::Ord + std::clone::Clone>(items: &[T]) -> Queue<T> {
+#[allow(dead_code)]
+pub fn with_elem<T: std::cmp::Ord + std::clone::Clone>(items: &[T]) -> Queue<T> {
     let mut q: Queue<T> = Queue::new();
     for i in items {
         q.insert(i.clone());
@@ -73,5 +74,3 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
         }
     }
 }
-
-mod test;
