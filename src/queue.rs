@@ -30,17 +30,17 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
         self.n += 1;
     }
 
-    fn bubble_up(&mut self, cur: usize) {
-        if cur == 0 {
+    fn bubble_up(&mut self, cur_index: usize) {
+        if cur_index == 0 {
             return;
         }
 
-        let parent = (cur - 1) / 2;
+        let parent_index = (cur_index - 1) / 2;
 
-        match self.q[parent].cmp(&self.q[cur]) {
+        match self.q[parent_index].cmp(&self.q[cur_index]) {
             std::cmp::Ordering::Greater => {
-                self.q.swap(cur, parent);
-                self.bubble_up(parent)
+                self.q.swap(cur_index, parent_index);
+                self.bubble_up(parent_index)
             }
             _ => {}
         }
@@ -62,25 +62,24 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
         Some(min)
     }
 
-    fn bubble_down(&mut self, cur: usize) {
-        let mut min = cur;
-        let child = 2 * cur + 1;
+    fn bubble_down(&mut self, cur_index: usize) {
+        let mut min_index = cur_index;
 
-        for i in 0..2 {
-            let candidate = child + i;
-            if candidate < self.n {
-                // todo: replace with get()
-                //let a = self.q.get(min_index);
-                //let b = self.q.get(candidate);
-                if self.q[min] > self.q[candidate] {
-                    min = candidate
+        let child_index = 2 * cur_index + 1;
+        for i in &[child_index, child_index + 1] {
+            match self.q.get(*i) {
+                None => {}
+                Some(child) => {
+                    if child < self.q.get(min_index).unwrap() {
+                        min_index = *i
+                    }
                 }
             }
         }
 
-        if min != cur {
-            self.q.swap(cur, min);
-            self.bubble_down(min);
+        if min_index != cur_index {
+            self.q.swap(cur_index, min_index);
+            self.bubble_down(min_index);
         }
     }
 }

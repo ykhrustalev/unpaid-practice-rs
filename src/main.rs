@@ -18,9 +18,6 @@ fn main() {
         println!("add {} [{}]", item, q);
     }
 
-//    q.shift();
-//    q.shift();
-
     for _ in 0..items.len() + 1 {
         match q.shift() {
             None => println!("none"),
