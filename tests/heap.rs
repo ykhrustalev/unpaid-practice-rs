@@ -3,7 +3,7 @@ extern crate unpaidpractice;
 use unpaidpractice::heap::*;
 
 #[test]
-fn test_1() {
+fn test_heap_1() {
     let mut h: ArrayHeap<i32> = ArrayHeap::new();
 
     h.insert(1492);
@@ -80,7 +80,7 @@ fn test_1() {
 }
 
 #[test]
-fn test_2() {
+fn test_heap_2() {
     let mut h: ArrayHeap<i32> = ArrayHeap::new();
 
     h.insert(10);
@@ -112,4 +112,31 @@ fn test_with_elem() {
         h.items(),
         [1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001, 1941]
     );
+}
+
+#[test]
+fn test_heasort_1() {
+    let mut items = [8, 5, 3, 1, 6, 8, 9, 9, 12];
+    sort(&mut items);
+    assert_eq!(items, [1, 3, 5, 6, 8, 8, 9, 9, 12]);
+}
+
+#[test]
+fn test_heasort_2() {
+    let mut items = ["b", "a", "d", "c"];
+    sort(&mut items);
+    assert_eq!(items, ["a", "b", "c", "d"]);
+}
+
+
+#[test]
+fn test_is_n_smallest_gte() {
+    let items = &[4, 1, 7, 3, 6, 2, 5];
+
+    let x = 3;
+
+    assert!(!is_n_smallest_gte(items, 0, &x));
+    assert!(!is_n_smallest_gte(items, 1, &x));
+    assert!(is_n_smallest_gte(items, 2, &x));
+    assert!(is_n_smallest_gte(items, 3, &x));
 }
