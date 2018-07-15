@@ -1,6 +1,7 @@
 [package]
-name = "unpaid-practice"
+name = "unpaidpractice"
 version = "0.1.0"
 authors = ["Yuri Khrustalev <yuri.khrustalev@gmail.com>"]
+license = "MIT"
 
 [dependencies]
