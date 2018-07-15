@@ -2,7 +2,6 @@ use std;
 
 pub struct Queue<T> {
     q: std::vec::Vec<T>,
-    n: usize,
 }
 
 #[allow(dead_code)]
@@ -18,16 +17,13 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
     pub fn new() -> Queue<T> {
         Queue {
             q: std::vec::Vec::new(),
-            n: 0,
         }
     }
 
     pub fn insert(&mut self, value: T) {
-        self.q.insert(self.n, value);
-        let n = self.n;
-        //        let n = self.q.len()  - 1;
-        self.bubble_up(n); // todo: use len -1
-        self.n += 1;
+        let n = self.q.len();
+        self.q.insert(n, value);
+        self.bubble_up(n);
     }
 
     fn bubble_up(&mut self, cur_index: usize) {
@@ -36,13 +32,9 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
         }
 
         let parent_index = (cur_index - 1) / 2;
-
-        match self.q[parent_index].cmp(&self.q[cur_index]) {
-            std::cmp::Ordering::Greater => {
-                self.q.swap(cur_index, parent_index);
-                self.bubble_up(parent_index)
-            }
-            _ => {}
+        if self.q[parent_index] > self.q[cur_index] {
+            self.q.swap(cur_index, parent_index);
+            self.bubble_up(parent_index)
         }
     }
 
@@ -56,7 +48,6 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
         }
 
         let min = self.q.swap_remove(0);
-        self.n -= 1;
         self.bubble_down(0);
 
         Some(min)
