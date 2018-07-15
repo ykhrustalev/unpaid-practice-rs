@@ -1,9 +1,5 @@
 use std;
 
-fn get_young_child(n: usize) -> usize {
-    2 * n + 1
-}
-
 pub struct Queue<T> {
     q: std::vec::Vec<T>,
     n: usize,
@@ -20,13 +16,17 @@ pub fn from_elem<T: std::cmp::Ord + std::clone::Clone>(items: &[T]) -> Queue<T> 
 
 impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
     pub fn new() -> Queue<T> {
-        Queue { q: std::vec::Vec::new(), n: 0 }
+        Queue {
+            q: std::vec::Vec::new(),
+            n: 0,
+        }
     }
 
     pub fn insert(&mut self, value: T) {
         self.q.insert(self.n, value);
         let n = self.n;
-        self.bubble_up(n);
+        //        let n = self.q.len()  - 1;
+        self.bubble_up(n); // todo: use len -1
         self.n += 1;
     }
 
@@ -55,47 +55,34 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
             return None;
         }
 
-        let min = self.q.remove(0);
-        match self.q.pop() {
-            None => {}
-            Some(last) => {
-                self.q.insert(0, last);
-                self.n -= 1;
-                self.bubble_down(0)
-            }
-        }
+        let min = self.q.swap_remove(0);
+        self.n -= 1;
+        self.bubble_down(0);
+
         Some(min)
     }
 
-    fn bubble_down(&mut self, p: usize) {
-        let c = get_young_child(p);
-        let mut min_index = p;
+    fn bubble_down(&mut self, cur: usize) {
+        let mut min = cur;
+        let child = 2 * cur + 1;
 
-        for i in 0..1 {
-            let candidate = c + i;
-            if candidate <= self.n {
+        for i in 0..2 {
+            let candidate = child + i;
+            if candidate < self.n {
                 // todo: replace with get()
                 //let a = self.q.get(min_index);
                 //let b = self.q.get(candidate);
-                if self.q[min_index] > self.q[candidate] {
-                    min_index = candidate
+                if self.q[min] > self.q[candidate] {
+                    min = candidate
                 }
             }
         }
 
-        if min_index != p {
-            self.q.swap(p, min_index);
-            self.bubble_down(min_index);
+        if min != cur {
+            self.q.swap(cur, min);
+            self.bubble_down(min);
         }
     }
-}
-
-
-#[test]
-fn test_get_young_child() {
-    assert_eq!(get_young_child(0), 1);
-    assert_eq!(get_young_child(1), 3);
-    assert_eq!(get_young_child(2), 5);
 }
 
 #[test]
@@ -109,8 +96,7 @@ fn test_queue() {
     assert_eq!(q.shift(), Some(7));
     assert_eq!(q.shift(), Some(11));
     assert_eq!(q.shift(), Some(12));
-//    assert_eq!(q.shift(), Some(13));
-
+    //    assert_eq!(q.shift(), Some(13));
 
     assert_eq!(q.items(), [5, 7, 8, 9]);
 
