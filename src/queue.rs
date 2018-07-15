@@ -1,12 +1,5 @@
 use std;
 
-fn get_parent(n: usize) -> Option<usize> {
-    match n {
-        0 => None,
-        x @ _ => Some((x - 1) / 2),
-    }
-}
-
 fn get_young_child(n: usize) -> usize {
     2 * n + 1
 }
@@ -37,6 +30,22 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
         self.n += 1;
     }
 
+    fn bubble_up(&mut self, cur: usize) {
+        if cur == 0 {
+            return;
+        }
+
+        let parent = (cur - 1) / 2;
+
+        match self.q[parent].cmp(&self.q[cur]) {
+            std::cmp::Ordering::Greater => {
+                self.q.swap(cur, parent);
+                self.bubble_up(parent)
+            }
+            _ => {}
+        }
+    }
+
     pub fn items(&self) -> std::vec::Vec<T> {
         self.q.clone()
     }
@@ -56,21 +65,6 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
             }
         }
         Some(min)
-    }
-
-    fn bubble_up(&mut self, p: usize) {
-        match get_parent(p) {
-            None => {}
-            Some(parent) => {
-                match self.q[parent].cmp(&self.q[p]) {
-                    std::cmp::Ordering::Greater => {
-                        self.q.swap(p, parent);
-                        self.bubble_up(parent)
-                    }
-                    _ => {}
-                }
-            }
-        }
     }
 
     fn bubble_down(&mut self, p: usize) {
@@ -94,15 +88,6 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
             self.bubble_down(min_index);
         }
     }
-}
-
-#[test]
-fn test_parent() {
-    assert_eq!(get_parent(0), None);
-    assert_eq!(get_parent(1), Some(0));
-    assert_eq!(get_parent(2), Some(0));
-    assert_eq!(get_parent(9), Some(4));
-    assert_eq!(get_parent(10), Some(4));
 }
 
 
