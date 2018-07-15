@@ -2,12 +2,12 @@ use std::clone::Clone;
 use std::cmp::Ord;
 use std::vec::*;
 
-pub fn sort<T: Clone + Ord>(items: &mut Vec<T>) {
+pub fn sort<T: Clone + Ord>(items: &mut [T]) {
     let n = items.len();
     merge_sort(items, 0, n);
 }
 
-fn merge_sort<T: Clone + Ord>(items: &mut Vec<T>, low: usize, high: usize) {
+fn merge_sort<T: Clone + Ord>(items: &mut [T], low: usize, high: usize) {
     if high - low < 2 {
         return;
     }
@@ -18,7 +18,7 @@ fn merge_sort<T: Clone + Ord>(items: &mut Vec<T>, low: usize, high: usize) {
     merge(items, low, middle, high)
 }
 
-fn merge<T: Clone + Ord>(items: &mut Vec<T>, low: usize, middle: usize, high: usize) {
+fn merge<T: Clone + Ord>(items: &mut [T], low: usize, middle: usize, high: usize) {
     let mut left = match items.get(low..middle) {
         None => Vec::new(),
         Some(slice) => slice.to_vec()
