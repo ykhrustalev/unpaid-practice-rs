@@ -2,8 +2,16 @@ mod queue;
 
 use std::iter::FromIterator;
 
+impl std::fmt::Display for queue::Queue<i32> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
+        let x = std::vec::Vec::from_iter(self.items().iter().map(|x| x.to_string())).join(",");
+        std::fmt::Display::fmt(&x, f)
+    }
+}
+
 fn main() {
-    let mut q: queue::Queue<i32> = queue::from_elem(&[
+    let mut q: queue::Queue<i32> = queue::Queue::new();
+    let items = &[
         1492,
         1783,
         1776,
@@ -14,10 +22,17 @@ fn main() {
         1918,
         2001,
         1941,
-    ]);
+    ];
 
-    println!("items: {}", std::vec::Vec::from_iter(q.items().iter().map(|x| x.to_string())).join(","));
-    println!("min: {}", q.extract_min().unwrap());
-    println!("items: {}", std::vec::Vec::from_iter(q.items().iter().map(|x| x.to_string())).join(","));
+    for item in items {
+        q.insert(item.clone());
+        println!("add {} [{}]", item, q);
+    }
 
+    for _ in 0..items.len() + 1 {
+        match q.shift() {
+            None => println!("none"),
+            Some(item) => println!("shift {} [{}]", item, q),
+        }
+    }
 }
