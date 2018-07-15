@@ -86,20 +86,26 @@ fn test_queue() {
     assert_eq!(q.shift(), Some(7));
     assert_eq!(q.shift(), Some(11));
     assert_eq!(q.shift(), Some(12));
-    //    assert_eq!(q.shift(), Some(13));
-
-    assert_eq!(q.items(), [5, 7, 8, 9]);
+    assert_eq!(q.shift(), Some(13));
+    assert_eq!(q.shift(), None);
+    assert_eq!(q.items(), []);
 
     q.insert(10);
     q.insert(3);
     q.insert(11);
+    q.insert(2);
+    q.insert(1);
+    q.insert(9);
+    q.insert(10);
 
-    assert_eq!(q.items(), [3, 7, 5, 9, 10, 8, 11]);
+    assert_eq!(q.items(), [1, 2, 9, 10, 3, 11, 10]);
+    assert_eq!(q.shift(), Some(1));
+    assert_eq!(q.shift(), Some(2));
     assert_eq!(q.shift(), Some(3));
-    assert_eq!(q.shift(), Some(5));
-    assert_eq!(q.shift(), Some(7));
-    assert_eq!(q.shift(), Some(8));
     assert_eq!(q.shift(), Some(9));
     assert_eq!(q.shift(), Some(10));
+    assert_eq!(q.shift(), Some(10));
     assert_eq!(q.shift(), Some(11));
+    assert_eq!(q.shift(), None);
+    assert_eq!(q.items(), []);
 }
