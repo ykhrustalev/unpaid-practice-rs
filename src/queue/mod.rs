@@ -4,7 +4,6 @@ pub struct Queue<T> {
     q: std::vec::Vec<T>,
 }
 
-#[allow(dead_code)]
 pub fn from_elem<T: std::cmp::Ord + std::clone::Clone>(items: &[T]) -> Queue<T> {
     let mut q: Queue<T> = Queue::new();
     for i in items {
@@ -61,7 +60,7 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
             match self.q.get(*i) {
                 None => {}
                 Some(child) => {
-                    if child < self.q.get(min_index).unwrap() {
+                    if child < &self.q[min_index] {
                         min_index = *i
                     }
                 }
@@ -75,37 +74,4 @@ impl<T: std::cmp::Ord + std::clone::Clone> Queue<T> {
     }
 }
 
-#[test]
-fn test_queue() {
-    let mut q: Queue<i32> = from_elem(&[12, 11, 13, 5, 6, 7]);
-
-    assert_eq!(q.items(), [5, 6, 7, 12, 11, 13]);
-
-    assert_eq!(q.shift(), Some(5));
-    assert_eq!(q.shift(), Some(6));
-    assert_eq!(q.shift(), Some(7));
-    assert_eq!(q.shift(), Some(11));
-    assert_eq!(q.shift(), Some(12));
-    assert_eq!(q.shift(), Some(13));
-    assert_eq!(q.shift(), None);
-    assert_eq!(q.items(), []);
-
-    q.insert(10);
-    q.insert(3);
-    q.insert(11);
-    q.insert(2);
-    q.insert(1);
-    q.insert(9);
-    q.insert(10);
-
-    assert_eq!(q.items(), [1, 2, 9, 10, 3, 11, 10]);
-    assert_eq!(q.shift(), Some(1));
-    assert_eq!(q.shift(), Some(2));
-    assert_eq!(q.shift(), Some(3));
-    assert_eq!(q.shift(), Some(9));
-    assert_eq!(q.shift(), Some(10));
-    assert_eq!(q.shift(), Some(10));
-    assert_eq!(q.shift(), Some(11));
-    assert_eq!(q.shift(), None);
-    assert_eq!(q.items(), []);
-}
+mod test;
