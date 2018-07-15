@@ -128,7 +128,6 @@ fn test_heasort_2() {
     assert_eq!(items, ["a", "b", "c", "d"]);
 }
 
-
 #[test]
 fn test_is_n_smallest_gte() {
     let items = &[4, 1, 7, 3, 6, 2, 5];

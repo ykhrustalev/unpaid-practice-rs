@@ -106,7 +106,6 @@ pub fn sort<T: Clone + Ord>(items: &mut [T]) {
     }
 }
 
-
 pub fn is_n_smallest_gte<T: Clone + Ord>(items: &[T], k: usize, val: &T) -> bool {
     let h = ArrayHeap::with_elem(items);
     compare_level(&h, 0, k as i32, &val) >= 0
@@ -117,7 +116,7 @@ fn compare_level<T: Clone + Ord>(h: &ArrayHeap<T>, cur_index: usize, level: i32,
         return level;
     }
 
-    if h.index(cur_index).unwrap()  >= val {
+    if h.index(cur_index).unwrap() >= val {
         return level;
     }
 
