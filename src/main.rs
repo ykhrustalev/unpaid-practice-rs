@@ -1,4 +1,4 @@
-mod heap;
+pub mod heap;
 
 use std::iter::FromIterator;
 
@@ -10,18 +10,18 @@ impl std::fmt::Display for heap::Heap<i32> {
 }
 
 fn main() {
-    let mut q: heap::Heap<i32> = heap::Heap::new();
+    let mut h: heap::Heap<i32> = heap::Heap::new();
     let items = &[1492, 1783, 1776, 1804, 1865, 1945, 1963, 1918, 2001, 1941];
 
     for item in items {
-        q.insert(item.clone());
-        println!("add {} [{}]", item, q);
+        h.insert(item.clone());
+        println!("add {} [{}]", item, h);
     }
 
     for _ in 0..items.len() + 1 {
-        match q.shift() {
+        match h.shift() {
             None => println!("none"),
-            Some(item) => println!("shift {} [{}]", item, q),
+            Some(item) => println!("shift {} [{}]", item, h),
         }
     }
 }

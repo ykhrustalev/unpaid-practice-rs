@@ -3,26 +3,27 @@ use std::cmp::Ord;
 use std::vec::Vec;
 
 pub struct Heap<T> {
-    q: Vec<T>,
+    v: Vec<T>,
 }
 
 impl<T: Ord + Clone> Heap<T> {
     pub fn new() -> Heap<T> {
-        Heap { q: Vec::new() }
+        Heap { v: Vec::new() }
     }
 
-    #[allow(dead_code)]
     pub fn with_elem(items: &[T]) -> Heap<T> {
-        let mut q: Heap<T> = Heap::new();
-        for i in items {
-            q.insert(i.clone());
+        let mut h = Heap { v: Vec::new() };
+        h.v.extend_from_slice(items);
+
+        for i in (0..h.v.len() - 1).rev() {
+            h.bubble_down(i)
         }
-        q
+        h
     }
 
     pub fn insert(&mut self, value: T) {
-        let n = self.q.len();
-        self.q.insert(n, value);
+        let n = self.v.len();
+        self.v.insert(n, value);
         self.bubble_up(n);
     }
 
@@ -32,22 +33,22 @@ impl<T: Ord + Clone> Heap<T> {
         }
 
         let parent_index = (cur_index - 1) / 2;
-        if self.q[parent_index] > self.q[cur_index] {
-            self.q.swap(cur_index, parent_index);
+        if self.v[parent_index] > self.v[cur_index] {
+            self.v.swap(cur_index, parent_index);
             self.bubble_up(parent_index)
         }
     }
 
     pub fn items(&self) -> Vec<T> {
-        self.q.clone()
+        self.v.clone()
     }
 
     pub fn shift(&mut self) -> Option<T> {
-        if self.q.is_empty() {
+        if self.v.is_empty() {
             return None;
         }
 
-        let min = self.q.swap_remove(0);
+        let min = self.v.swap_remove(0);
         self.bubble_down(0);
 
         Some(min)
@@ -58,10 +59,10 @@ impl<T: Ord + Clone> Heap<T> {
 
         let child_index = 2 * cur_index + 1;
         for i in &[child_index, child_index + 1] {
-            match self.q.get(*i) {
+            match self.v.get(*i) {
                 None => {}
                 Some(child) => {
-                    if child < &self.q[min_index] {
+                    if child < &self.v[min_index] {
                         min_index = *i
                     }
                 }
@@ -69,7 +70,7 @@ impl<T: Ord + Clone> Heap<T> {
         }
 
         if min_index != cur_index {
-            self.q.swap(cur_index, min_index);
+            self.v.swap(cur_index, min_index);
             self.bubble_down(min_index);
         }
     }
