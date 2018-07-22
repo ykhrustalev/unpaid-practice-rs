@@ -21,11 +21,11 @@ fn merge_sort<T: Clone + Ord>(items: &mut [T], low: usize, high: usize) {
 fn merge<T: Clone + Ord>(items: &mut [T], low: usize, middle: usize, high: usize) {
     let mut left = match items.get(low..middle) {
         None => Vec::new(),
-        Some(slice) => slice.to_vec()
+        Some(slice) => slice.to_vec(),
     };
     let mut right = match items.get(middle..high) {
         None => Vec::new(),
-        Some(slice) => slice.to_vec()
+        Some(slice) => slice.to_vec(),
     };
 
     let mut i = low;
